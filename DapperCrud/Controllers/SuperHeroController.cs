@@ -20,7 +20,6 @@ namespace DapperCrud.Controllers
         public async Task<ActionResult<List<SuperHero>>> GetAllSuperHeroes()
         {
             using var connection = new SqlConnection(_config.GetConnectionString("DefaultConnection"));
-            ;
             var heroes = await SelectSuperHeroes(connection);
             return Ok(heroes);
         }
@@ -35,7 +34,6 @@ namespace DapperCrud.Controllers
         public async Task<ActionResult<SuperHero>> GetHero(int heroId)
         {
             using var connection = new SqlConnection(_config.GetConnectionString("DefaultConnection"));
-            ;
             var hero = await connection.QueryAsync<SuperHero>("select * from superheroes where id = @Id", 
                 new {Id = heroId});
             return Ok(hero);
@@ -45,7 +43,6 @@ namespace DapperCrud.Controllers
         public async Task<ActionResult<List<SuperHero>>> CreateHero(SuperHero hero)
         {
             using var connection = new SqlConnection(_config.GetConnectionString("DefaultConnection"));
-
             await connection.ExecuteAsync("insert into superheroes (name, firstname, lastname, place) values(@Name, @FirstName, @LastName, @Place)", hero);
             return Ok(await SelectSuperHeroes(connection));
         }
@@ -54,7 +51,6 @@ namespace DapperCrud.Controllers
         public async Task<ActionResult<List<SuperHero>>> UpdateHero(SuperHero hero)
         {
             using var connection = new SqlConnection(_config.GetConnectionString("DefaultConnection"));
-
             await connection.ExecuteAsync("update superheroes set name = @Name, firstname = @FirstName, lastname = @LastName, place = @Place where id = @Id", hero);
             return Ok(await SelectSuperHeroes(connection));
         }
@@ -63,11 +59,8 @@ namespace DapperCrud.Controllers
         public async Task<ActionResult<List<SuperHero>>> DeleteHero(int heroId)
         {
             using var connection = new SqlConnection(_config.GetConnectionString("DefaultConnection"));
-
             await connection.ExecuteAsync("delete from superheroes where id = @Id", new {Id = heroId});
             return Ok(await SelectSuperHeroes(connection));
         }
-
-
     }
 }
